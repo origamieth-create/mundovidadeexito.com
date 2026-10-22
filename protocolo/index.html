@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación de Salud Prostática</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        .fade-in { animation: fadeIn 0.4s ease-in-out forwards; }
+        .fade-out { animation: fadeOut 0.3s ease-in-out forwards; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-15px); }
+        }
+        
+        .hidden-step { display: none !important; }
+        
+        /* Progress bar and option styles */
+        .progress-bar-fill { transition: width 0.5s ease-out; }
+        .loading-bar-fill { transition: width 3s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        .option-card {
+            transition: all 0.2s ease;
+        }
+        .option-card.selected {
+            background-color: #ecfdf5; /* emerald-50 */
+            border-color: #10b981; /* emerald-500 */
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.1), 0 2px 4px -1px rgba(16, 185, 129, 0.06);
+        }
+        .option-card:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col items-center">
+
+    <main class="w-full max-w-md bg-white min-h-screen flex flex-col relative shadow-xl overflow-hidden">
+        
+        <!-- Global Header with Progress Bar (Hidden initially) -->
+        <header id="quiz-header" class="w-full p-4 border-b border-gray-100 hidden-step bg-white z-10 sticky top-0">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Evaluación</span>
+                <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">Paso <span id="current-q-num">1</span>/11</span>
+            </div>
+            <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                <div id="progress-line" class="h-full bg-emerald-500 progress-bar-fill rounded-full relative" style="width: 0%;">
+                    <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-grow p-4 flex flex-col pb-8">
+
+            <div id="step-0" class="quiz-step flex flex-col items-center text-center mt-2">
+                <h1 class="text-[1.6rem] sm:text-3xl font-black uppercase leading-tight mb-5 text-emerald-700 tracking-tight">
+                    <span class="bg-black text-white px-2 py-1 inline-block mb-1 shadow-sm">URGENTE:</span><br>
+                    ¡TRUCO NATURAL CASERO DE 14 DÍAS ESTÁ DESHINCHANDO LA PRÓSTATA Y ELIMINANDO LA HPB NATURALMENTE!
+                </h1>
+                
+                <p class="text-gray-700 text-base mb-6 px-1 leading-relaxed">
+                    Los hombres están volviendo a <span class="text-emerald-600 font-bold bg-emerald-50 px-1">orinar con fuerza, durmiendo toda la noche sin levantarse y recuperando su rendimiento en la cama.</span> Todo gracias a una sencilla receta natural que elimina el parásito oculto detrás del agrandamiento de la próstata.
+                </p>
+
+                <div class="relative w-full mb-8">
+                    <div class="absolute inset-0 bg-emerald-500 rounded-xl transform translate-x-2 translate-y-2 opacity-20"></div>
+                    <img src="Captura de Tela 2026-10-13 às 14.32.33.jpg" alt="Comparación de próstata" class="relative w-full border-[3px] border-emerald-500 rounded-xl shadow-lg object-cover" onerror="this.src='https://placehold.co/600x800/10b981/ffffff?text=Captura+de+Tela'">
+                </div>
+
+                <button onclick="startQuiz()" class="w-full py-4 px-6 bg-[#00a650] hover:bg-[#008f44] text-white text-xl font-black rounded-xl shadow-[0_4px_0_#007a3b] active:shadow-[0_0px_0_#007a3b] active:translate-y-1 transition-all duration-150 uppercase tracking-wide">
+                    ¡QUIERO APRENDER TAMBIÉN!
+                </button>
+            </div>
+
+            <div id="step-1" class="quiz-step hidden-step pt-4">
+                <h2 class="text-2xl font-bold text-gray-900 leading-tight mb-8 text-center">¿Alguna vez te has desparasitado de alguna manera?</h2>
+                <div class="space-y-3">
+                    <button onclick="handleSingleChoice(1)" class="w-full p-5 bg-white border-2 border-gray-200 text-gray-800 text-lg font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-center justify-between group">
+                        <span>Sí</span>
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 group-hover:border-emerald-500 flex items-center justify-center"><div class="w-3 h-3 rounded-full bg-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity"></div></div>
+                    </button>
+                    <button onclick="handleSingleChoice(1)" class="w-full p-5 bg-white border-2 border-gray-200 text-gray-800 text-lg font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-center justify-between group">
+                        <span>No</span>
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 group-hover:border-emerald-500 flex items-center justify-center"><div class="w-3 h-3 rounded-full bg-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity"></div></div>
+                    </button>
+                </div>
+            </div>
+
+            <div id="step-2" class="quiz-step hidden-step pt-4">
+                <h2 class="text-2xl font-bold text-gray-900 leading-tight mb-2 text-center">¿Eres consciente de que la falta de cuidados con este tema puede empeorar tu próstata y dejar secuelas que pueden ser irreversibles?</h2>
+                <p class="text-center text-gray-500 mb-8 font-medium">Por favor, sé sincero.</p>
+                <div class="space-y-3">
+                    <button onclick="handleSingleChoice(2)" class="w-full p-5 bg-white border-2 border-gray-200 text-gray-800 text-[1.05rem] leading-tight font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-start gap-3 group">
+                        <span class="text-2xl">😔</span>
+                        <span>Sí, conozco la gravedad que es tener parásitos habitando mi intestino.</span>
+                    </button>
+                    <button onclick="handleSingleChoice(2)" class="w-full p-5 bg-white border-2 border-gray-200 text-gray-800 text-[1.05rem] leading-tight font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-start gap-3 group">
+                        <span class="text-2xl">😰</span>
+                        <span>No sabía la gravedad, pero quiero cuidarme.</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="step-3" class="quiz-step hidden-step flex flex-col items-center w-full pt-2">
+                <div class="bg-red-50 border-l-4 border-red-600 p-4 mb-6 rounded-r-lg shadow-sm">
+                    <h2 class="text-[1.2rem] leading-snug text-left">
+                        <span class="text-red-700 font-extrabold block mb-2">Si nunca usaste métodos naturales de control de parásitos, mantente alerta:</span>
+                        <span class="text-gray-900 font-bold">los gusanos pueden multiplicarse en tu cuerpo y alcanzar órganos vitales como la próstata, el cerebro, el corazón y los pulmones. No ignores este riesgo;</span>
+                        <span class="text-emerald-700 font-extrabold underline decoration-emerald-300 decoration-2 underline-offset-2">es esencial desparasitarse al menos una vez al año.</span>
+                    </h2>
+                </div>
+
+                <div class="w-full bg-white border border-gray-200 shadow-md mb-8 overflow-hidden rounded-md font-serif">
+                    <div class="w-full bg-red-700 text-white text-center py-2 text-xs font-sans tracking-widest uppercase font-bold">
+                        CIENCIA Y SALUD
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-[1.4rem] font-black leading-tight mb-4 text-black font-sans">Hombre de 42 años descubre un parásito tras síntomas de próstata hipertrofiada.</h3>
+                        
+                        <p class="text-[0.95rem] leading-relaxed text-gray-800 mb-4">
+                            Michel Dupont, de 42 años, empezó a sentir algo extraño. Pasaba cada vez más <span class="font-bold bg-yellow-100 px-1">tiempo en el baño</span>, se despertaba de 3 a 4 veces por noche para orinar y sentía su vejiga siempre llena. "Pensé que era solo la edad", relata.
+                        </p>
+                        
+                        <div class="flex gap-2 mb-2">
+                            <img src="watermarked_img_12676867709857430190.jpg" alt="Paciente" class="w-1/2 object-cover rounded shadow-sm border border-gray-200 h-32" onerror="this.src='https://placehold.co/300x250/e2e8f0/64748b?text=Paciente'">
+                            <div class="w-1/2 relative">
+                                <img src="watermarked_img_10565005781989014605.jpg" alt="Ultrasonido" class="w-full object-cover rounded shadow-sm border border-gray-200 h-32" onerror="this.src='https://placehold.co/300x250/1e293b/94a3b8?text=Ultrasonido'">
+                                <div class="absolute inset-0 border-2 border-red-500 rounded rounded-full scale-[0.6] opacity-70"></div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 italic mb-4 border-b pb-4">Imágenes ilustrativas del caso. Archivo médico.</p>
+
+                        <p class="text-[0.95rem] leading-relaxed text-gray-800 mb-4">
+                            Tras los exámenes, los médicos encontraron <span class="font-bold">un parásito</span> alojado en su cuerpo, probablemente presente desde hace 2 años. Según los profesionales, este tipo de parásito puede causar inflamaciones silenciosas, afectando directamente a la próstata.
+                        </p>
+                        
+                        <p class="text-[0.95rem] leading-relaxed text-gray-800">
+                            "Siempre he sido el hombre de la casa... hoy son mis hijos los que me cuidan. Nunca pensé que esto pudiera pasar tan pronto", lamentó al ver su autonomía perdida por la inflamación.
+                        </p>
+                    </div>
+                </div>
+
+                <button onclick="nextStep()" class="w-full py-4 px-6 bg-[#00a650] hover:bg-[#008f44] text-white text-xl font-black rounded-xl shadow-[0_4px_0_#007a3b] active:shadow-[0_0px_0_#007a3b] active:translate-y-1 transition-all duration-150 uppercase tracking-wide">
+                    CONTINUAR
+                </button>
+            </div>
+
+            <div id="step-4" class="quiz-step hidden-step pt-4">
+                <h2 class="text-2xl font-bold text-gray-900 leading-tight mb-2 text-center">¿Has comido alguno de estos alimentos en los últimos 3 meses?</h2>
+                <p class="text-center text-gray-500 mb-6 font-medium text-sm">Responde con atención, estamos evaluando cada respuesta.</p>
+                
+                <div class="space-y-3 mb-8" id="options-step-4">
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-semibold text-gray-800 text-lg">Queso</span>
+                    </div>
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-semibold text-gray-800 text-lg">Alcohol</span>
+                    </div>
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-semibold text-gray-800 text-lg">Patatas Fritas</span>
+                    </div>
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-semibold text-gray-800 text-lg">Refresco</span>
+                    </div>
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-semibold text-gray-800 text-lg">Salchicha</span>
+                    </div>
+                </div>
+                
+                <button onclick="handleMultiChoiceContinue('step-4')" class="w-full py-4 px-6 bg-[#00a650] hover:bg-[#008f44] text-white text-xl font-black rounded-xl shadow-[0_4px_0_#007a3b] active:shadow-[0_0px_0_#007a3b] active:translate-y-1 transition-all duration-150 uppercase tracking-wide">
+                    CONTINUAR
+                </button>
+            </div>
+
+            <div id="step-5" class="quiz-step hidden-step pt-4">
+                <h2 class="text-2xl font-bold text-gray-900 leading-tight mb-2 text-center">Dentro de los síntomas enumerados a continuación, ¿cuáles te molestan más?</h2>
+                <p class="text-center text-gray-500 mb-6 font-medium text-sm">Selecciona uno o más.</p>
+
+                <div class="space-y-3 mb-8" id="options-step-5">
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-bold text-gray-800 text-[0.95rem]">CHORRO DÉBIL DE ORINA</span>
+                    </div>
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-bold text-gray-800 text-[0.95rem]">GANAS FRECUENTES DE ORINAR</span>
+                    </div>
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-bold text-gray-800 text-[0.95rem]">DIFICULTAD PARA EMPEZAR A ORINAR</span>
+                    </div>
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-bold text-gray-800 text-[0.95rem]">SENSACIÓN DE VEJIGA LLENA DESPUÉS DE ORINAR</span>
+                    </div>
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-bold text-gray-800 text-[0.95rem]">URGENCIA PARA ORINAR</span>
+                    </div>
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-bold text-gray-800 text-[0.95rem]">GOTEO AL FINAL DE ORINAR</span>
+                    </div>
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-bold text-gray-800 text-[0.95rem]">EYACULACIÓN PRECOZ</span>
+                    </div>
+                </div>
+
+                <button onclick="handleMultiChoiceContinue('step-5')" class="w-full py-4 px-6 bg-[#00a650] hover:bg-[#008f44] text-white text-xl font-black rounded-xl shadow-[0_4px_0_#007a3b] active:shadow-[0_0px_0_#007a3b] active:translate-y-1 transition-all duration-150 uppercase tracking-wide">
+                    CONTINUAR
+                </button>
+            </div>
+
+            <div id="step-6" class="quiz-step hidden-step pt-4">
+                <h2 class="text-2xl font-bold text-gray-900 leading-tight mb-2 text-center">¿Cuánto tiempo llevas viviendo con estos síntomas?</h2>
+                <p class="text-center text-gray-500 mb-6 font-medium text-sm">Esta información es esencial para entender mejor tu situación actual.</p>
+                <div class="space-y-3">
+                    <button onclick="handleSingleChoice(6)" class="w-full p-4 bg-white border-2 border-gray-200 text-left rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all">
+                        <div class="font-bold text-gray-900 text-lg mb-1">Menos de 6 meses</div>
+                        <div class="text-sm text-gray-600">Está empezando ahora, pero ya me está preocupando.</div>
+                    </button>
+                    <button onclick="handleSingleChoice(6)" class="w-full p-4 bg-white border-2 border-gray-200 text-left rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all">
+                        <div class="font-bold text-gray-900 text-lg mb-1">Entre 6 meses y 1 año</div>
+                        <div class="text-sm text-gray-600">Ya hace un tiempo... y noto que empeora poco a poco.</div>
+                    </button>
+                    <button onclick="handleSingleChoice(6)" class="w-full p-4 bg-white border-2 border-gray-200 text-left rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all">
+                        <div class="font-bold text-gray-900 text-lg mb-1">Entre 1 y 3 años</div>
+                        <div class="text-sm text-gray-600">Convivo con esto hace años y sinceramente, me cansé de aceptarlo como "normal".</div>
+                    </button>
+                    <button onclick="handleSingleChoice(6)" class="w-full p-4 bg-white border-2 border-gray-200 text-left rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all">
+                        <div class="font-bold text-gray-900 text-lg mb-1">Más de 3 años</div>
+                        <div class="text-sm text-gray-600">Ya hace tanto tiempo... sinceramente, ni recuerdo cómo era vivir sin estos síntomas.</div>
+                    </button>
+                </div>
+            </div>
+
+            <div id="step-7" class="quiz-step hidden-step pt-4">
+                <h2 class="text-2xl font-bold text-gray-900 leading-tight mb-6 text-center">¿Los síntomas que seleccionaste han interrumpido tu vida?</h2>
+                <div class="space-y-3">
+                    <button onclick="handleSingleChoice(7)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-md font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-center gap-3">
+                        <span class="text-2xl">✅</span> <span>¡Sí, demasiado!</span>
+                    </button>
+                    <button onclick="handleSingleChoice(7)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-md font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-center gap-3">
+                        <span class="text-2xl">😅</span> <span>Sí, es tan normal en mi vida que ya me acostumbré.</span>
+                    </button>
+                    <button onclick="handleSingleChoice(7)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-md font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-center gap-3">
+                        <span class="text-2xl">🧐</span> <span>Si no me lo hubieras dicho, ni sabría que podría ser parasitosis.</span>
+                    </button>
+                    <button onclick="handleSingleChoice(7)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-md font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-center gap-3">
+                        <span class="text-2xl">😌</span> <span>No me molesta.</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="step-8" class="quiz-step hidden-step pt-4">
+                <h2 class="text-2xl font-bold text-gray-900 leading-tight mb-2 text-center">¿Sabes cuál es el volumen actual de tu próstata?</h2>
+                <p class="text-center text-gray-500 mb-6 font-medium text-sm">Responder a la pregunta de abajo puede ayudar a identificar señales tempranas de crecimiento anormal.</p>
+                <div class="space-y-3">
+                    <button onclick="handleSingleChoice(8)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-md font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-center gap-3">
+                        <span class="text-2xl">😀</span> <span>Menos de 30 cm³ (volumen normal)</span>
+                    </button>
+                    <button onclick="handleSingleChoice(8)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-md font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-center gap-3">
+                        <span class="text-2xl">🤨</span> <span>Entre 30 y 40 cm³ (levemente aumentado)</span>
+                    </button>
+                    <button onclick="handleSingleChoice(8)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-md font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-center gap-3">
+                        <span class="text-2xl">😮</span> <span>Entre 40 y 60 cm³ (moderadamente aumentado)</span>
+                    </button>
+                    <button onclick="handleSingleChoice(8)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-md font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-center gap-3">
+                        <span class="text-2xl">😥</span> <span>Más de 60 cm³ (bastante aumentado)</span>
+                    </button>
+                    <button onclick="handleSingleChoice(8)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-md font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-center gap-3">
+                        <span class="text-2xl">🥵</span> <span>No sé / Nunca me hice el examen</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="step-9" class="quiz-step hidden-step pt-4">
+                <h2 class="text-2xl font-bold text-gray-900 leading-tight mb-2 text-center">¿Estás usando alguno de estos medicamentos actualmente?</h2>
+                <p class="text-center text-gray-500 mb-6 font-medium text-sm">Responde con atención y selecciona una o más opciones:</p>
+
+                <div class="space-y-3 mb-8" id="options-step-9">
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-semibold text-gray-800 text-[1rem]">Finasterida</span>
+                    </div>
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-semibold text-gray-800 text-[1rem]">Clorhidrato de tamsulosina</span>
+                    </div>
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-semibold text-gray-800 text-[1rem]">Dutasterida</span>
+                    </div>
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-semibold text-gray-800 text-[1rem]">Combinaciones de dutasterida y tamsulosina</span>
+                    </div>
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-semibold text-gray-800 text-[1rem]">Mesilato de doxazosina</span>
+                    </div>
+                    <div onclick="toggleMultiOption(this)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-semibold text-gray-800 text-[1rem]">Tadalafilo</span>
+                    </div>
+                    <div onclick="toggleMultiOption(this, true)" class="option-card border-2 border-gray-200 bg-white p-4 rounded-xl cursor-pointer flex items-center gap-3">
+                        <div class="checkbox-ui w-6 h-6 rounded border-2 border-gray-300 flex-shrink-0 flex items-center justify-center text-white bg-white transition-colors"><svg class="w-4 h-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
+                        <span class="font-semibold text-gray-800 text-[1rem] italic text-gray-500">No estoy usando nada en el momento.</span>
+                    </div>
+                </div>
+                
+                <button onclick="handleMultiChoiceContinue('step-9')" class="w-full py-4 px-6 bg-[#00a650] hover:bg-[#008f44] text-white text-xl font-black rounded-xl shadow-[0_4px_0_#007a3b] active:shadow-[0_0px_0_#007a3b] active:translate-y-1 transition-all duration-150 uppercase tracking-wide">
+                    CONTINUAR
+                </button>
+            </div>
+
+            <div id="step-10" class="quiz-step hidden-step pt-4">
+                <h2 class="text-2xl font-bold text-gray-900 leading-tight mb-2 text-center">¿Con qué frecuencia monitoreas el tamaño de tu próstata?</h2>
+                <p class="text-center text-gray-500 mb-6 font-medium text-sm">Por favor, responde con atención.</p>
+                <div class="space-y-3">
+                    <button onclick="handleSingleChoice(10)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-md font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-center gap-3">
+                        <span class="text-2xl">⚠️</span> <span>Cada 6 meses</span>
+                    </button>
+                    <button onclick="handleSingleChoice(10)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-md font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-center gap-3">
+                        <span class="text-2xl">✅</span> <span>Cada 12 meses</span>
+                    </button>
+                    <button onclick="handleSingleChoice(10)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-md font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-center gap-3">
+                        <span class="text-2xl">😰</span> <span>Cada 2 años</span>
+                    </button>
+                    <button onclick="handleSingleChoice(10)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-md font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-center gap-3">
+                        <span class="text-2xl">🔴</span> <span>Solo lo hice una vez.</span>
+                    </button>
+                    <button onclick="handleSingleChoice(10)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-md font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left flex items-center gap-3">
+                        <span class="text-2xl">❌</span> <span>Aún no lo hago.</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="step-11" class="quiz-step hidden-step pt-4">
+                <h2 class="text-2xl font-bold text-gray-900 leading-tight mb-2 text-center">¿Estás de acuerdo conmigo en que nuestra salud es nuestro bien más preciado?</h2>
+                <p class="text-center text-gray-500 mb-6 font-medium text-sm">Sin ella, no somos nada.</p>
+                <div class="space-y-4">
+                    <button onclick="handleSingleChoice(11)" class="w-full p-6 bg-white border-2 border-gray-200 text-gray-800 text-xl font-bold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-center flex flex-col items-center gap-2">
+                        <span class="text-4xl">✅</span>
+                        <span>¡De acuerdo!</span>
+                    </button>
+                    <button onclick="handleSingleChoice(11)" class="w-full p-6 bg-white border-2 border-gray-200 text-gray-800 text-xl font-bold rounded-xl shadow-sm hover:border-gray-400 transition-all text-center flex flex-col items-center gap-2">
+                        <span class="text-4xl">😕</span>
+                        <span>En desacuerdo</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="step-12" class="quiz-step hidden-step pt-4">
+                <h2 class="text-2xl font-bold text-gray-900 leading-tight mb-2 text-center">¿Cómo está tu desempeño sexual actualmente?</h2>
+                <p class="text-center text-gray-500 mb-6 font-medium text-sm">Por favor, responde con sinceridad; esta información es importante para nuestro análisis.</p>
+                <div class="space-y-3">
+                    <button onclick="handleSingleChoice(12)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-[0.95rem] font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left">
+                        Mi vida sexual sigue igual que siempre, no tengo quejas.
+                    </button>
+                    <button onclick="handleSingleChoice(12)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-[0.95rem] font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left">
+                        Siento que mi desempeño no es tan bueno como antes, pero aún logro mantener relaciones.
+                    </button>
+                    <button onclick="handleSingleChoice(12)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-[0.95rem] font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left">
+                        Consigo empezar, pero pierdo la firmeza con facilidad.
+                    </button>
+                    <button onclick="handleSingleChoice(12)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-[0.95rem] font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left">
+                        Casi siempre tengo dificultad para obtener o mantener una erección.
+                    </button>
+                    <button onclick="handleSingleChoice(12)" class="w-full p-4 bg-white border-2 border-gray-200 text-gray-800 text-[0.95rem] font-semibold rounded-xl shadow-sm hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left">
+                        Ya sea por elección propia u otros motivos, actualmente no tengo relaciones sexuales.
+                    </button>
+                </div>
+            </div>
+
+            <div id="step-13" class="quiz-step hidden-step flex flex-col items-center justify-center py-12">
+                <div class="relative w-24 h-24 mb-8">
+                    <div class="absolute inset-0 border-4 border-gray-100 rounded-full"></div>
+                    <div class="absolute inset-0 border-4 border-emerald-500 rounded-full border-t-transparent animate-spin"></div>
+                    <div class="absolute inset-0 flex items-center justify-center text-emerald-600 font-bold" id="loading-perc">0%</div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-center mb-3 text-gray-900">Analizando tus respuestas...</h2>
+                <p class="text-gray-500 mb-8 text-center px-4">Cruzando datos con los estudios clínicos más recientes para generar tu protocolo.</p>
+                
+                <div class="w-full max-w-[80%] bg-gray-200 rounded-full h-3 overflow-hidden">
+                    <div id="loading-bar-inner" class="bg-emerald-500 h-full rounded-full loading-bar-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div id="step-14" class="quiz-step hidden-step flex flex-col items-center w-full pb-8">
+                
+                <!-- Logo -->
+                <div class="mb-4 mt-2 flex flex-col items-center">
+                    <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mb-2">
+                        <svg class="w-6 h-6 text-emerald-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg>
+                    </div>
+                    <h3 class="font-serif text-emerald-900 font-bold text-lg text-center leading-tight">Protocole<br><span class="font-normal italic">Désinflammation</span><br>de la Prostate</h3>
+                </div>
+
+                <div class="w-24 h-2 bg-emerald-500 rounded-full mb-6"></div>
+
+                <h2 class="text-md font-bold text-gray-800 mb-6 flex items-center gap-2">
+                    <span>🤩</span> Protocolo <span class="underline decoration-2 underline-offset-2">generado con éxito!</span>
+                </h2>
+
+                <!-- Badge -->
+                <div class="w-full max-w-[90%] bg-[#22a322] rounded-2xl p-5 text-center text-white relative mb-8 shadow-lg">
+                    <div class="text-2xl font-black mb-1">Tu protocolo</div>
+                    <div class="bg-white/30 rounded inline-block px-4 py-1 text-xl font-bold uppercase tracking-wide">
+                        Exclusivo está listo !
+                    </div>
+                    <!-- Down arrow indicator -->
+                    <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-blue-500 border-2 border-white rounded-full flex items-center justify-center shadow">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                    </div>
+                </div>
+
+                <!-- VTurb Video Placeholder -->
+                <div class="w-full relative shadow-xl rounded-lg overflow-hidden border-4 border-gray-900 bg-black aspect-[9/16] flex flex-col items-center justify-center">
+                    <!-- Fake play button to simulate video -->
+                    <div class="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center opacity-90 mb-4 shadow-lg">
+                        <svg class="w-10 h-10 text-white ml-2" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6z"></path></svg>
+                    </div>
+                    <span class="text-white font-medium text-sm border border-white/20 px-3 py-1 rounded bg-black/50">Espacio para Video VTurb</span>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Total actual questions for the progress bar (Steps 1,2, 4,5,6,7,8,9,10,11,12) = 11 questions.
+        const totalQuestions = 11;
+        let questionsAnswered = 0;
+        let currentDomStep = 0;
+
+        function updateProgress() {
+            const perc = (questionsAnswered / totalQuestions) * 100;
+            document.getElementById('progress-line').style.width = `${perc}%`;
+            document.getElementById('current-q-num').innerText = Math.min(questionsAnswered + 1, totalQuestions);
+        }
+
+        function transitionTo(nextStepId) {
+            const currentElement = document.getElementById(`step-${currentDomStep}`);
+            const nextElement = document.getElementById(`step-${nextStepId}`);
+
+            currentElement.classList.remove('fade-in');
+            currentElement.classList.add('fade-out');
+
+            setTimeout(() => {
+                currentElement.classList.add('hidden-step');
+                currentElement.classList.remove('fade-out');
+                
+                nextElement.classList.remove('hidden-step');
+                nextElement.classList.add('fade-in');
+                
+                // Scroll to top smoothly
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                currentDomStep = nextStepId;
+            }, 300);
+        }
+
+        function startQuiz() {
+            document.getElementById('quiz-header').classList.remove('hidden-step');
+            transitionTo(1);
+        }
+
+        function nextStep() {
+            let nextId = currentDomStep + 1;
+            transitionTo(nextId);
+        }
+
+        function handleSingleChoice(stepNum) {
+            questionsAnswered++;
+            updateProgress();
+            
+            if (stepNum === 2) {
+                // Hide header for interstitial
+                document.getElementById('quiz-header').classList.add('hidden-step');
+                transitionTo(3); // Go to interstitial
+            } else if (stepNum === 12) {
+                document.getElementById('quiz-header').classList.add('hidden-step');
+                startLoading(); // Go to loading
+            } else {
+                nextStep();
+            }
+        }
+
+        // --- Logic for Multiple Choice ---
+        function toggleMultiOption(element, isNone = false) {
+            const isSelected = element.classList.contains('selected');
+            const parentId = element.parentElement.id;
+            const container = document.getElementById(parentId);
+            
+            if (isNone) {
+                // If "I'm not using anything" is selected, clear others
+                const allOptions = container.querySelectorAll('.option-card');
+                allOptions.forEach(opt => resetOptionState(opt));
+                if (!isSelected) setOptionState(element, true);
+            } else {
+                // If a normal option is clicked, uncheck the "None" option if it exists
+                const noneOption = Array.from(container.querySelectorAll('.option-card')).find(opt => opt.innerText.includes('No estoy usando nada'));
+                if (noneOption) resetOptionState(noneOption);
+                
+                setOptionState(element, !isSelected);
+            }
+        }
+
+        function setOptionState(element, active) {
+            const svg = element.querySelector('svg');
+            const box = element.querySelector('.checkbox-ui');
+            if (active) {
+                element.classList.add('selected');
+                box.classList.remove('border-gray-300', 'bg-white');
+                box.classList.add('border-emerald-500', 'bg-emerald-500');
+                svg.classList.remove('opacity-0');
+            } else {
+                resetOptionState(element);
+            }
+        }
+
+        function resetOptionState(element) {
+            element.classList.remove('selected');
+            const svg = element.querySelector('svg');
+            const box = element.querySelector('.checkbox-ui');
+            box.classList.remove('border-emerald-500', 'bg-emerald-500');
+            box.classList.add('border-gray-300', 'bg-white');
+            svg.classList.add('opacity-0');
+        }
+
+        function handleMultiChoiceContinue(stepId) {
+            const container = document.getElementById(`options-${stepId}`);
+            const hasSelection = container.querySelectorAll('.option-card.selected').length > 0;
+            
+            if (!hasSelection) {
+                // Flash red if nothing selected
+                container.classList.add('animate-pulse');
+                setTimeout(() => container.classList.remove('animate-pulse'), 500);
+                return; // Do not advance
+            }
+            
+            questionsAnswered++;
+            updateProgress();
+            
+            // Re-show header if it was hidden by interstitial (happens if coming from step 3 to 4)
+            if (stepId === 'step-4') {
+                document.getElementById('quiz-header').classList.remove('hidden-step');
+            }
+            
+            nextStep();
+        }
+
+        // --- Loading Logic ---
+        function startLoading() {
+            transitionTo(13); // Show loading
+            
+            setTimeout(() => {
+                const bar = document.getElementById('loading-bar-inner');
+                const percText = document.getElementById('loading-perc');
+                
+                bar.style.width = '100%';
+                
+                let val = 0;
+                const interval = setInterval(() => {
+                    val += 1;
+                    percText.innerText = `${val}%`;
+                    if (val >= 100) {
+                        clearInterval(interval);
+                        setTimeout(() => transitionTo(14), 500); // Wait half a second at 100% then show result
+                    }
+                }, 30); // 3 seconds total
+            }, 400); // Wait for fade in
+        }
+
+        // Initialize Start Page Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('step-0').classList.add('fade-in');
+        });
+    </script>
+</body>
+</html>
