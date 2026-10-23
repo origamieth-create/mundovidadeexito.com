@@ -183,14 +183,25 @@
 
   </div>
 
-  <!-- Script para alternar o estado de pendente para confirmado ao terminar o vídeo -->
+  <!-- Script para confirmar o pagamento e exibir o botão exatamente aos 5 minutos (300 segundos) -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      window.addEventListener("smartplayer:ended", function () {
-        document.body.classList.remove("pendente");
-        const oferta = document.getElementById("oferta");
-        if (oferta) {
-          oferta.classList.add("visivel");
+      var SEGUNDOS_PARA_LIBERAR = 300; // 5 minutos = 300 segundos
+      var player = document.getElementById("vid-6adba37a0c88786015739925");
+
+      if (player) {
+        player.addEventListener("player:ready", function () {
+          player.displayHiddenElements(SEGUNDOS_PARA_LIBERAR, [".oferta"], { persist: true });
+        });
+      }
+
+      window.addEventListener("smartplayer:timeupdate", function (event) {
+        if (event.detail && event.detail.currentTime >= SEGUNDOS_PARA_LIBERAR) {
+          document.body.classList.remove("pendente");
+          const oferta = document.getElementById("oferta");
+          if (oferta) {
+            oferta.classList.add("visivel");
+          }
         }
       });
     });
