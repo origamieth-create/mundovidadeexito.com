@@ -178,7 +178,13 @@
 
     <!-- Oferta / Botão CTA -->
     <div class="oferta" id="oferta">
-      <a href="#" class="cta" id="cta" payt_action="oneclick_buy" data-object="LJOX6P-4E287E">Adquirir Ahora</a>
+      <!-- HOTMART - Sales Funnel Widget -->
+      <div id="hotmart-sales-funnel"></div>
+      <script src="https://checkout.hotmart.com/lib/hotmart-checkout-elements.js"></script>
+      <script>
+        checkoutElements.init('salesFunnel').mount('#hotmart-sales-funnel')
+      </script>
+      <!-- HOTMART - Sales Funnel Widget -->
     </div>
 
   </div>
