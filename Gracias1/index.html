@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>¡Gracias! Tu acceso está en camino</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#faf7f2;
+    --card:#ffffff;
+    --text:#2b2620;
+    --muted:#6f665c;
+    --gold:#b8892f;
+    --gold-soft:#f4ead6;
+    --green:#2f8f5b;
+    --green-soft:#e3f3ea;
+    --border:#ece4d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px 16px;
+  }
+  .card{
+    width:100%;
+    max-width:480px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:36px 24px 28px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(43,38,32,.06);
+  }
+  .check{
+    width:76px;height:76px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    background:var(--green-soft);
+    display:flex;align-items:center;justify-content:center;
+    animation:pop .5s ease-out;
+  }
+  .check svg{width:40px;height:40px}
+  @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+  .badge{
+    display:inline-block;
+    font-size:12px;font-weight:600;letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--green);
+    margin-bottom:8px;
+  }
+  h1{
+    font-family:'Lora',Georgia,serif;
+    font-size:28px;line-height:1.25;
+    margin-bottom:12px;
+  }
+  .lead{color:var(--muted);font-size:16px;margin-bottom:28px}
+  .lead strong{color:var(--text)}
+  .email-box{
+    background:var(--gold-soft);
+    border-radius:14px;
+    padding:20px 18px;
+    margin-bottom:24px;
+    display:flex;gap:14px;align-items:flex-start;text-align:left;
+  }
+  .email-box svg{flex-shrink:0;width:28px;height:28px;margin-top:2px}
+  .email-box p{font-size:15px}
+  .email-box strong{display:block;font-size:16px;margin-bottom:2px}
+  h2{
+    font-size:15px;font-weight:600;text-align:left;
+    margin-bottom:12px;
+  }
+  ol{
+    list-style:none;text-align:left;margin-bottom:24px;
+    counter-reset:step;
+  }
+  ol li{
+    counter-increment:step;
+    position:relative;
+    padding:0 0 14px 40px;
+    font-size:15px;color:var(--muted);
+  }
+  ol li strong{color:var(--text)}
+  ol li::before{
+    content:counter(step);
+    position:absolute;left:0;top:0;
+    width:26px;height:26px;border-radius:50%;
+    background:var(--text);color:#fff;
+    font-size:13px;font-weight:600;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .note{
+    font-size:13px;color:var(--muted);
+    border-top:1px solid var(--border);
+    padding-top:18px;
+  }
+  .footer{
+    margin-top:18px;font-size:12px;color:#a59b8f;
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="check" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#2f8f5b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+
+    <span class="badge">Compra confirmada</span>
+    <h1>¡Gracias por tu confianza!</h1>
+    <p class="lead">Tu pedido fue recibido con éxito. <strong>El acceso a tu producto será enviado a tu correo electrónico</strong> en los próximos minutos.</p>
+
+    <div class="email-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#b8892f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+      <p><strong>Revisa tu bandeja de entrada</strong>Busca el correo enviado al email que usaste en la compra.</p>
+    </div>
+
+    <h2>¿No lo encuentras? Sigue estos pasos:</h2>
+    <ol>
+      <li><strong>Espera unos minutos.</strong> A veces el correo puede tardar hasta 15 minutos en llegar.</li>
+      <li><strong>Revisa las carpetas de Spam, Correo no deseado y Promociones.</strong></li>
+      <li><strong>Busca en tu correo</strong> palabras como "acceso", "compra" o "pedido".</li>
+    </ol>
+
+    <p class="note">Si después de 24 horas no recibiste tu acceso, responde al correo de confirmación de tu compra y te ayudaremos con gusto.</p>
+
+    <p class="footer">© Mundo Vida de Éxito · Todos los derechos reservados</p>
+  </main>
+</body>
+</html>
