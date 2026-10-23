@@ -43,6 +43,7 @@
       color: #fff;
       text-align: center;
       padding: 14px 16px;
+      width: 100%;
     }
     .topo strong {
       display: block;
@@ -134,6 +135,7 @@
 </head>
 <body class="pendente">
 
+  <!-- Faixa de Processamento de Pagamento no Topo -->
   <header class="topo">
     <strong>Novena de Nuestra Señora Desatadora de Nudos</strong>
     <small class="so-pendente">CONFIRMANDO TU CONTRIBUCIÓN · NO CIERRES ESTA PÁGINA</small>
@@ -142,6 +144,7 @@
 
   <div class="wrapper">
 
+    <!-- Caixa de Aviso Logo Acima do Vídeo -->
     <div class="aviso" role="status">
       <div class="icone" aria-hidden="true">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d33a2c" stroke-width="2" stroke-linecap="round">
@@ -159,15 +162,31 @@
       </p>
     </div>
 
+    <!-- Vídeo -->
     <div class="video">
       <vturb-smartplayer id="vid-6ada46282ca0c3473b662ef4" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 177.77777777777777% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer>
       <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/564df658-020f-468e-99f7-4203114f2fb1/players/6ada46282ca0c3473b662ef4/v4/player.js", s.async=!0,document.head.appendChild(s); </script>
     </div>
 
+    <!-- Oferta / Botão CTA -->
     <div class="oferta" id="oferta">
       <a href="#" class="cta" id="cta" payt_action="oneclick_buy" data-object="LJOX6P-4E287E">Adquirir Ahora</a>
     </div>
 
   </div>
+
+  <!-- Script para alternar o estado de pendente para confirmado ao terminar o vídeo -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Monitora os eventos do Smartplayer do VTurb para quando o vídeo terminar
+      window.addEventListener("smartplayer:ended", function () {
+        document.body.classList.remove("pendente");
+        const oferta = document.getElementById("oferta");
+        if (oferta) {
+          oferta.classList.add("visivel");
+        }
+      });
+    });
+  </script>
 </body>
 </html>
