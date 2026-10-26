@@ -175,7 +175,7 @@
     </div>
 
     <!-- Oferta / Botão CTA -->
-    <div class="oferta" id="oferta">
+    <div class="oferta visivel" id="oferta">
       <!-- HOTMART - Sales Funnel Widget -->
       <div id="hotmart-sales-funnel"></div>
       <script src="https://checkout.hotmart.com/lib/hotmart-checkout-elements.js"></script>
@@ -195,7 +195,7 @@
 
       if (player) {
         player.addEventListener("player:ready", function () {
-          player.displayHiddenElements(SEGUNDOS_PARA_LIBERAR, [".oferta"], { persist: true });
+          // botão da oferta visível desde o início (sem atraso)
         });
       }
 
