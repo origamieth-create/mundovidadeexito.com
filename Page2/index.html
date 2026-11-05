@@ -100,60 +100,57 @@
 </head>
 <body>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carregando...</title>
+    <title>Loader</title>
     <style>
-        .custom-loader-container {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8fafc;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        /* Remove margens e garante fundo transparente */
+        body {
             margin: 0;
+            padding: 0;
+            background: transparent;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .loader-card {
-            background: #ffffff;
-            padding: 30px 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        .loader-wrapper {
+            display: inline-block;
             text-align: center;
-            max-width: 400px;
-            width: 90%;
+            width: 100%;
+            max-width: 360px;
+            padding: 10px;
+            box-sizing: border-box;
         }
 
-        .loader-card h2 {
-            color: #0f172a;
-            font-size: 1.25rem;
-            margin-bottom: 8px;
+        .loader-wrapper h2 {
+            color: #ffffff; /* Texto em branco para destacar no fundo escuro */
+            font-size: 1.15rem;
+            margin: 0 0 6px 0;
             font-weight: 600;
         }
 
-        .loader-card p {
-            color: #64748b;
-            font-size: 0.9rem;
-            margin-bottom: 24px;
+        .loader-wrapper p {
+            color: #cbd5e1; /* Cinza claro para subtítulo */
+            font-size: 0.85rem;
+            margin: 0 0 16px 0;
         }
 
         /* Barra de Progresso Estilizada */
         .progress-bar-wrapper {
-            background: #e2e8f0;
+            background: rgba(255, 255, 255, 0.15); /* Fundo sutil da barra */
             border-radius: 99px;
             height: 10px;
             width: 100%;
             overflow: hidden;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             position: relative;
         }
 
         .progress-bar-fill {
             background: linear-gradient(90deg, #10b981, #059669);
             height: 100%;
-            width: 85%; /* Mantém os 85% solicitados */
+            width: 85%; /* 85% solicitado */
             border-radius: 99px;
             position: relative;
             animation: pulse-glow 2s infinite ease-in-out;
@@ -178,8 +175,9 @@
 
         .percentage-text {
             font-weight: 700;
-            color: #059669;
-            font-size: 1.1rem;
+            color: #34d399; /* Verde claro vibrante */
+            font-size: 1rem;
+            margin: 0;
         }
 
         @keyframes shimmer {
@@ -195,17 +193,15 @@
 </head>
 <body>
 
-    <div class="custom-loader-container">
-        <div class="loader-card">
-            <h2>¡Tu compra está casi completa!</h2>
-            <p>Por favor, espera un momento para finalizar tu registro.</p>
-            
-            <div class="progress-bar-wrapper">
-                <div class="progress-bar-fill"></div>
-            </div>
-            
-            <div class="percentage-text">85%</div>
+    <div class="loader-wrapper">
+        <h2>¡Tu compra está casi completa!</h2>
+        <p>Por favor, espera un momento para finalizar tu registro.</p>
+        
+        <div class="progress-bar-wrapper">
+            <div class="progress-bar-fill"></div>
         </div>
+        
+        <div class="percentage-text">85%</div>
     </div>
 
 </body>
